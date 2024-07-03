@@ -8,8 +8,8 @@ export const authGuard = async (req, res, next) => {
   ) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const { id } = verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(id).select("-password");
+      const { _id } = verify(token, process.env.JWT_SECRET).data;
+      req.user = await User.findById(_id).select("-password");
       next();
     } catch (error) {
       let err = new Error("Not authorized, Token failed");
